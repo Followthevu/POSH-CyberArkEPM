@@ -24,14 +24,14 @@ $global:EpmHeader = $null
 $global:ApiAccount = $null
 
 #if using CyberArkAIM for authentication
-    #CyberArk Variables
+#CyberArk Variables
 
-    $global:CyberArkAIMServer = ""
-    $global:CyberArkSafeName = ""
-    $global:CyberArkAppID = ""
+$global:CyberArkAIMServer = ""
+$global:CyberArkSafeName = ""
+$global:CyberArkAppID = ""
 
-    #CyberArk-Protected Account
-    $global:CyberArkObjectName = ""
+#CyberArk-Protected Account
+$global:CyberArkObjectName = ""
 
 #Server settings
 #You can leave it as 1 or put multiple servers
@@ -41,6 +41,4 @@ if ($EpmServer.count -ge 2) {
 
     $global:EpmServer = $global:EpmServer | Get-Random
 
-} 
-
-Get-CyArkEPMAuth
+}
