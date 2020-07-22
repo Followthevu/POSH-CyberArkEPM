@@ -2,6 +2,8 @@
 
 CyberArkEPM is a powershell module that communicates with a CyberArk EPM (Endpoint Privilege Manager) instance using their REST APIs.
 
+Please Note: This Module is still incomplete.
+
 Please see: https://docs.cyberark.com/Product-Doc/OnlineHelp/EPM/Latest/en/Content/LandingPages/LPDeveloper.htm
 
 ## Installation
