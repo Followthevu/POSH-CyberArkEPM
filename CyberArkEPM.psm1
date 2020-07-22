@@ -21,16 +21,11 @@ Export-ModuleMember -Function $Public.Basename
 
 #global variables
 $global:EpmHeader = $null
-$global:ApiAccount = $null
-
 #if using CyberArkAIM for authentication
-#CyberArk Variables
-
+$global:ApiAccount = $null
 $global:CyberArkAIMServer = ""
 $global:CyberArkSafeName = ""
 $global:CyberArkAppID = ""
-
-#CyberArk-Protected Account
 $global:CyberArkObjectName = ""
 
 #Server settings
