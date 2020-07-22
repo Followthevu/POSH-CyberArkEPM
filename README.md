@@ -58,4 +58,4 @@ $Sets[0].id
 Pull requests are welcomed. I am not experieced with github and git so there will be a delay for my response. For major changes, please open an issue first to discuss the proposed changes.
 
 ## License
-Not Available
+MIT License, please see 'LICENSE'
