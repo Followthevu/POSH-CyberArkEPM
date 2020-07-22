@@ -39,7 +39,7 @@ import-module .\CyberArkEPM.psm1
 ```
 
 ## Usage
-For Help with the cmdlets please use the 'Get-Help' on the Cmdlet, please note that these are not complete yet.
+For help with the cmdlets please use the 'Get-Help' on the Cmdlet, please note that these are not complete yet.
 
 To Authenticate: 
 ```Powershell
