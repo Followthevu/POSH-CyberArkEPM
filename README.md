@@ -57,5 +57,29 @@ $Sets[0].id
 ## Contributing
 Pull requests are welcomed. I am not experieced with github and git so there will be a delay for my response. For major changes, please open an issue first to discuss the proposed changes.
 
+## Actions
+
+### Created actions for
+
+- EPM authentication
+- Get EPM version
+- Get sets list
+- Get aggregated events
+- Get raw events
+- Get raw event details
+- Get policies
+- Get policy details
+- Get computer groups
+- Get computers
+
+### Not worked on yet/incomplete
+
+- Windows authentication
+- Get admin audit data ??
+- Create policy ?? 
+- Update policy
+- Delete policy
+- Update ransomware mode
+
 ## License
 MIT License, please see 'LICENSE'
