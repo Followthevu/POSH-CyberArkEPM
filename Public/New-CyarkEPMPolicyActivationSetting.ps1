@@ -1,4 +1,4 @@
-function New-CyarkEPMPolicyActivationSetting(){
+function New-CyarkEPMPolicyActivationSetting() {
 
     Param(
         [parameter(Mandatory=$False)]
@@ -19,9 +19,9 @@ function New-CyarkEPMPolicyActivationSetting(){
             Year        =        $ActivateDate.Year
             Month       =        $ActivateDate.Month
             Day         =        $ActivateDate.Day
-            Hours       =        $ActivateDate.Hours
-            Minutes     =        $ActivateDate.Minutes
-            Seconds     =        $ActivateDate.Seconds
+            Hours       =        $ActivateDate.Hour
+            Minutes     =        $ActivateDate.Minute
+            Seconds     =        $ActivateDate.Second
 
         }
 
@@ -38,9 +38,9 @@ function New-CyarkEPMPolicyActivationSetting(){
             Year        =        $DeactivateDate.Year
             Month       =        $DeactivateDate.Month
             Day         =        $DeactivateDate.Day
-            Hours       =        $DeactivateDate.Hours
-            Minutes     =        $DeactivateDate.Minutes
-            Seconds     =        $DeactivateDate.Seconds
+            Hours       =        $DeactivateDate.Hour
+            Minutes     =        $DeactivateDate.Minute
+            Seconds     =        $DeactivateDate.Second
 
         }
 

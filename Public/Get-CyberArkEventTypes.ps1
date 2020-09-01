@@ -1,5 +1,12 @@
 function Get-CyArkEventTypes(){
-
+<# 
+ .Synopsis 
+  Lists CyberArk EPM Event Types
+ .Description 
+  Lists CyberArk EPM Event Types
+ .Example 
+  Get-CyArkEventTypes
+#>
     $ThreatDetection = ("Attack","SuspiciousActivity")
 
     Write-Host "`nThreat Detection: "

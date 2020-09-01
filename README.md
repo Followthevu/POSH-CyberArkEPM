@@ -1,16 +1,18 @@
 # CyberArkEPM Powershell-Module
 
-CyberArkEPM is a powershell module that communicates with a CyberArk EPM (Endpoint Privilege Manager) instance using their REST APIs.
+CyberArkEPM is a Powershell module that communicates with a CyberArk EPM (Endpoint Privilege Manager) instance using CyberArk REST APIs.
 
-Please Note: This Module is still incomplete.
+Please Note: This module is still incomplete.
 
-Please see: https://docs.cyberark.com/Product-Doc/OnlineHelp/EPM/Latest/en/Content/LandingPages/LPDeveloper.htm
+API Version: 11.5
+
+Please see: https://docs.cyberark.com/Product-Doc/OnlineHelp/EPM/11.5/en/Content/LandingPages/LPDeveloper.htm
 
 ## Installation
 
 First open 'CyberArkEPM.psm1'
 
-If you are using CyberArkAIM to Access the user password please fill in:
+If you are using CyberArkAIM to access the service account password please fill in the following in the CyberArkEPM.psm1:
 
 ```Powershell
 #if using CyberArkAIM for authentication
@@ -46,6 +48,8 @@ To Authenticate:
 Get-CyarkEPMAuth -Method "Credential"
 ```
 
+If you would like the module to trigger authentication immediately, you may add the above line to the end of the psm1 file before import.
+
 Viewing Sets from EPM:
 ```Powershell
 # This Variable will have an Array of the Sets from the EPM
@@ -55,7 +59,7 @@ $Sets[0].id
 ```
 
 ## Contributing
-Pull requests are welcomed. I am not experieced with github and git so there will be a delay for my response. For major changes, please open an issue first to discuss the proposed changes.
+Pull requests are welcomed. I am not experienced with github and git so there will be a delay with my response. For major changes, please open an issue first to discuss the proposed changes.
 
 ## Actions
 
@@ -75,10 +79,7 @@ Pull requests are welcomed. I am not experieced with github and git so there wil
 ### Not worked on yet/incomplete
 
 - Windows authentication
-- Get admin audit data ??
-- Create policy ?? 
 - Update policy
-- Delete policy
 - Update ransomware mode
 
 ## License

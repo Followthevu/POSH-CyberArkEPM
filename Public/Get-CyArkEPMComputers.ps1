@@ -1,71 +1,92 @@
 function Get-CyArkEPMComputers() {
-    <# Filter does not work yet#>
+<#
+.Synopsis 
+This method retrieves the computers from a Set.
+.Description 
+This method retrieves the computers from a Set. 
+You may also apply a limit, filter, and offset for your query
+
+Valid operators for ComputerName filter:
+
+- eq
+- in
+- contains
+
+Valid operators for Platform and Status filter:
+
+- eq
+- in
+
+.Example
+Get-CyArkEPMComputers -SetID <Set ID> -Filter "contains(ComputerName, '01')"
+The following example returns the computer whose name is 'comp01'
+
+.Example
+Get-CyArkEPMComputers -SetID <Set ID> -Filter  "ComputerName in('comp01', 'comp02')"
+The following example returns computers whose names are either 'comp01' or 'comp02':
+
+.Example
+Get-CyArkEPMComputers -SetID <Set ID> -Filter "contains(ComputerName, '01')"
+The following example returns computers whose computer name contains '01'. For example, 'comp01', 'desktop01', '101-server':
+
+.Example
+Get-CyArkEPMComputers -SetID <Set ID> -Filter "Platform eq 'MacOS' and ComputerName in('comp01', 'comp02')"
+The following example returns MacOS computers whose name is either 'comp01' or 'comp02':
+
+.Example
+Get-CyArkEPMComputers -SetID <Set ID> -Filter "Status in('Disconnected', 'Support')"
+The following example returns computers whose status is either 'Disconnected' or 'Support':
+
+.Example
+Get-CyArkEPMComputers -SetID <Set ID> -Filter "Platform eq 'Windows' and Status eq 'Alive'"
+The following example returns computers whose platform is 'Windows' and status is 'Alive'.
+
+#>
     Param(
+        [parameter(Mandatory=$true)]
         [string]$SetID,
         [int]$Offset,
-        [ValidateRange(1,1000)]
+        [ValidateRange(1,5000)]
         [int]$Limit,
-        [string]$Filter
-        #[string]$ComputerName,
-        #[string]$Platform,
-        #[string]$Status,
-        #[ValidateSet('eq','in','contains')]
-        #[string]$FilterOperator,
-
-
+        [string]$Filter,
+        [string]$Version
     )
 
-    $ComputersUri = "https://${EpmServer}/EPM/API/Sets/${SetID}/Computers"
+    $ComputersUri = "https://$epmserver/EPM/API/Sets/$SetID/Computers"
+
+    if ($Version) { $ComputersUri = "https://$epmserver/EPM/API/$Version/Sets/$SetID/Computers"}
 
 
-        if ($Offset -or $Limit -or $Filter) {
-        
-         $ComputersUri =  $ComputersUri + "?"
-        
-    }
+    if ($Offset -or $Limit -or $Filter) { $ComputersUri =  $ComputersUri + "?" }
 
     $Query = @()
 
+    #For offset command
     if ($Offset) {
         $Query += ("Offset=" + $Offset)
-        #Write-Host "Uri will be: " + $Uri
     } 
+    #For limit param
     if ($Limit) {
         $Query += ("Limit=" + $Limit)
-        #Write-Host "Uri will be: " + $Uri
     } 
+    #For filter param
     if ($Filter) {
-
-        $Query += ("$filter=" + "'${Filter}'")
-
+        $Query += ('$filter=' + "$Filter")
     }
 
     $QueryString = ($Query -join "&")
 
+
     $ComputersUri = $ComputersUri + $QueryString
-   <# expiremental 
-   if($ComputerName -or $Platform -or $Status) {
 
-        $Filter = $null
-
-        switch ($FilterOperator) {
-
-            "eq" { $Filter = "ComputerName eq '${ComputerName}"; break }
-            "in" { $Filter = "ComputerName in(${ComputerName})"; break}
-            "contains" { $Filter = "contains(ComputernName, '${ComputerName}'"; break}
-            default { "Specify Correct FilterOperator"; break}
-
-        }
-
-        $Query += ("$filter=" + $Filter)
-
-    } #>
 
     try {
 
         $Computersrequest = Invoke-WebRequest -Uri $ComputersUri -ContentType "application/json" -Method "GET" -header $EpmHeader
 
-        $Computerscontent =  $Computersrequest.content | Convertfrom-Json
+        $Computerscontent = $Computersrequest.content | Convertfrom-Json
+
+
         
     } catch {
         # Dig into the exception to get the Response details.

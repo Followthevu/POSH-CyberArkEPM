@@ -43,11 +43,11 @@ function Get-CyArkEPMSetsList() {
         [int]$Limit
     )
 
-    $Uri = "https://${EpmServer}/EPM/API/Sets"
+    $Uri = "https://${epmserver}/EPM/API/Sets"
 
     if ($Version) {
 
-        $Uri = "https://${EpmServer}/EPM/API/${Version}/Sets"
+        $Uri = "https://${epmserver}/EPM/API/${Version}/Sets"
 
     }
 
@@ -57,17 +57,18 @@ function Get-CyArkEPMSetsList() {
         
     }
 
-    if ($Offset -and $Limit) {
-        $Uri = $Uri + "Offset=" + $Offset + "&" + "Limit=" + $Limit
-        #Write-Host "Uri will be: " + $Uri
-    } elseif ($Offset) {
-        $Uri = $Uri + "Offset=" + $Offset
-        #Write-Host "Uri will be: " + $Uri
-    } elseif ($Limit) {
-        $Uri = $Uri + "Limit=" + $Limit
-        #Write-Host "Uri will be: " + $Uri
+    $Query = @()
+
+    if ($Offset) {
+        $Query += ("Offset=" + $Offset)
+    } 
+    if ($Limit) {
+        $Query += ("Limit=" + $Limit)
     }
 	
+    $QueryString = ($Query -join "&")
+
+    $Uri = $Uri + $QueryString
 
 	try {
 

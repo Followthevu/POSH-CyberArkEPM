@@ -1,5 +1,21 @@
 function Get-CyArkEPMRawEvents() {
-    
+<# 
+.Synopsis 
+This method enables the user to retrieve raw events file data from EPM according to a predefined filter.
+.Description 
+This method enables the user to retrieve raw events file data from EPM according to a predefined filter.
+
+PolicyName wild cards:
+
+    "xxx xxx" - filters the exact value between the quotes
+    xxx xxx - filters anything that contains the string
+    *xxx xxx* - filters anything that contains the string between the *
+    xxx* - filters all strings that start with the value before the *
+    *xxx - filters all strings that end with the value after the *
+
+.Example 
+Get-CyArkEPMRawEvents -SetID <SetID> -Category <Category>
+#>
     Param(
         [parameter(Mandatory=$true)]
         [string]$SetID,
@@ -15,14 +31,10 @@ function Get-CyArkEPMRawEvents() {
         [ValidateSet('All','Attack','SuspiciousActivity','ElevationRequest','Trust','Installation','Launch','ManualRequest','Block','Access','Ransomware','Trust','Installation','Launch','Block','Access','StartElevated','Computer')]
         [string]$EventType,
         [switch]$ListEventTypes,
-        [string]$Publisher,
         [string]$DateFrom,
         [string]$DateTo,
         [ValidateSet('All','WithJustification')]
         [string]$Justification,
-        [ValidateSet('All','Executable','Script','MSI','MSU','ActiveX','Com','Win8App','DLL','DMG','PKG')]
-        [string]$ApplicationType,
-        [string]$ApplicationTypeCustom,
         [string]$PolicyName
     )
 
@@ -31,35 +43,20 @@ function Get-CyArkEPMRawEvents() {
         Get-CyberArkEventTypes
     }
 
-    $RawEventsUri = "https://${EpmServer}/EPM/API/Sets/${SetID}/Events/${Category}/${FileQualifier}"
+    $RawEventsUri = "https://$epmserver/EPM/API/Sets/$SetID/Events/$Category/$FileQualifier"
 
     if ($Version) {
     
-        $RawEventsUri = "https://${EpmServer}/EPM/API/${Version}/Sets/${SetID}/Events/${Category}/${FileQualifier}"
+        $RawEventsUri = "https://$epmserver/EPM/API/$Version/Sets/$SetID/Events/$Category/$FileQualifier"
 
     }
 
     $Query = @()
 
-    if ($Offset -or $Limit -or $EventType -or $Publisher -or $DateFrom -or $DateTo -or $Justification -or $ApplicationType -or $ApplicationTypeCustom -or $PolicyName) {
+    if ($Offset -or $Limit -or $EventType -or $Publisher -or $DateFrom -or $DateTo -or $Justification -or $PolicyName) {
         
          $RawEventsUri =  $RawEventsUri + "?"
         
-    }
-
-    if ($ApplicationType -and $ApplicationTypeCustom) {
-
-        Write-host "You cannot use ApplicationType and ApplicationTypeCustom"
-        break
-
-    } elseif ($ApplicationType) {
-
-        $Query += ("ApplicationType=" + $ApplicationType)
-
-    } elseif ($ApplicationTypeCustom) {
-
-        $Query += ("ApplicationType=" + $ApplicationTypeCustom)
-
     }
 
     if ($Offset) {
@@ -74,17 +71,13 @@ function Get-CyArkEPMRawEvents() {
         $Query += ("EventType=" + $EventType)
         #Write-Host "Uri will be: " + $Uri
     } 
-    if ($Publisher) {
-        $Query += ("Publisher=" + $Publisher)
-        #Write-Host "Uri will be: " + $Uri
-    } 
     if ($DateFrom) {
+        $DateFrom = Get-date $DateFrom -Format s
         $Query += ("DateFrom=" + $DateFrom)
-        #Write-Host "Uri will be: " + $Uri
     } 
     if ($DateTo) {
+        $DateTo = Get-date $DateTo -Format s
         $Query += ("DateTo=" + $DateTo)
-        #Write-Host "Uri will be: " + $Uri
     } 
     if ($Justification) {
         $Query += ("Justification=" + $Justification)
@@ -95,6 +88,27 @@ function Get-CyArkEPMRawEvents() {
         #Write-Host "Uri will be: " + $Uri
     } 
 
+
+
+    
+    if ($DeactivateDate) { 
+        
+        $DeactivateDate = Get-date $DeactivateDate
+
+        $DDate = [pscustomobject]@{
+
+            Year        =        $DeactivateDate.Year
+            Month       =        $DeactivateDate.Month
+            Day         =        $DeactivateDate.Day
+            Hours       =        $DeactivateDate.Hour
+            Minutes     =        $DeactivateDate.Minute
+            Seconds     =        $DeactivateDate.Second
+
+        }
+
+        $DDate| Get-Member | ? { $_.membertype -eq "NoteProperty" }  | select -expand Name | ForEach-Object { if ($ddate.$_ -eq $null) { $ddate.$_ = 0 } }
+
+    }
 
     $QueryString = ($Query -join "&")
 

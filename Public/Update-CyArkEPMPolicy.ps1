@@ -1,25 +1,29 @@
-function New-CyArkEPMPolicy(){
+function Update-CyArkEPMPolicy(){
 <# 
-.Synopsis 
-This method creates a new EPM policy.
-.Description 
-This method creates a new EPM policy.
-.Example 
-New-CyArkEPMPolicy -SetID $sets.id -PolicyDetails <Object from New-CyarkEPMPolicyDetails>
+ .Synopsis 
+  Updates a Windows Advanced Policy
+
+ .Description 
+
+ .Example 
+  
 #>
     Param(
         [parameter(Mandatory=$true)]
         [string]$SetID,
+        [parameter(Mandatory=$true)]
+        [string]$PolicyId,
         [string]$Version,
         [parameter(Mandatory=$true)]
         $PolicyDetails
+
     )
 
-    $uri = "https://$global:EpmServer/EPM/API/Sets/$SetID/Policies"
+    $UpdatePolicyUri = "https://${global:EpmServer}/EPM/API/Sets/${SetID}/Policies/${PolicyId}"
     
     if ($Version) {
 
-        $uri = "https://$global:EpmServer/EPM/API/$Version/Sets/$SetID/Policies"
+        $UpdatePolicyUri = "https://${global:EpmServer}/EPM/API/${Version}/Sets/${SetID}/Policies/${PolicyId}"
 
     }
 
@@ -27,7 +31,7 @@ New-CyArkEPMPolicy -SetID $sets.id -PolicyDetails <Object from New-CyarkEPMPolic
 
     try {
 
-        $CreatePolicy = Invoke-WebRequest -Uri $uri -ContentType "application/json" -Method "Post" -Body ($Body) -header $EpmHeader
+        $CreatePolicy = Invoke-WebRequest -Uri $UpdatePolicyUri -ContentType "application/json" -Method "PUT" -Body ($Body) -header $EpmHeader
 
         $CreatePolicyContent = $CreatePolicy.content | Convertfrom-Json
         $CreatePolicy

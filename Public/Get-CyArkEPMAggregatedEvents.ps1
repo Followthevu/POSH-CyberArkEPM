@@ -93,11 +93,11 @@ function Get-CyArkEPMAggregatedEvents() {
         Get-CyberArkEventTypes
     }
 
-    $AggregatedEventsUri = "https://${EpmServer}/EPM/API/Sets/${SetID}/Events/${Category}"
+    $AggregatedEventsUri = "https://$epmserver/EPM/API/Sets/$SetID/Events/$Category"
 
     if ($Version) {
     
-        $AggregatedEventsUri = "https://${EpmServer}/EPM/API/${Version}/Sets/${SetID}/Events/${Category}"
+        $AggregatedEventsUri = "https://$epmserver/EPM/API/$Version/Sets/$SetID/Events/$Category"
 
     }
 

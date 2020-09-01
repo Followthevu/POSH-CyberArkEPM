@@ -1,5 +1,14 @@
 function New-CyarkEPMApp() {
+<# 
+ .Synopsis 
+  Created PS Object for the Application parameter when using New-CyarkEPMPolicy
+ .Description 
+  Created PS Object for the Application parameter when using New-CyarkEPMPolicy
 
+  https://docs.cyberark.com/Product-Doc/OnlineHelp/EPM/11.5/en/Content/WebServices/AdvancedPolicyDefinition.htm
+ .Example 
+  New-CyarkEPMApp -Description "Application Description" -Checksum <HashofApplication> -FileName "Application.exe" 
+#>
     Param(
         [string]$ApplicationID,
         [ValidateLength(1,1000)]
@@ -8,7 +17,6 @@ function New-CyarkEPMApp() {
         [bool]$Inheritable,
         [ValidateSet($false,$true)]
         [bool]$RestrictOpenSaveFileDialog,
-        [parameter(Mandatory=$true)]
         [string]$Checksum,
         [ValidateLength(1,250)]
         [string]$FileName,
@@ -48,9 +56,11 @@ function New-CyarkEPMApp() {
         [ValidateLength(1,256)]
         [string]$Company,
         [ValidateSet('Exactly','Prefix','Contains','Wildcards','RegExp')]
-        [string]$CompanyCompare
-        #$MinProductVersion,$MaxProductVersion
-        #$MinFileVersion, $MaxFileVersion
+        [string]$CompanyCompare,
+        [string]$MinProductVersion,
+        [string]$MaxProductVersion,
+        [string]$MinFileVersion, 
+        [string]$MaxFileVersion
     )
 
     [string]$Type = 'EXE'
@@ -63,6 +73,10 @@ function New-CyarkEPMApp() {
         if ($ArbitraryPublisher) {$Location = $ArbitraryPath} else { Write-Host "`nPlease Provide a -ArbitraryPublisher"; break}
     }
 
+    if($Checksum) {
+        $Checksum = "SHA1:${Checksum}"
+    }
+
     $App = [PSCustomObject]@{
  
             ApplicationID                  =    $ApplicationID
@@ -70,7 +84,7 @@ function New-CyarkEPMApp() {
             Type                           =    $Type
             Inheritable                    =    $Inheritable
             RestrictOpenSaveFileDialog     =    $RestrictOpenSaveFileDialog
-            Checksum                       =    "SHA1:${Checksum}"
+            Checksum                       =    $Checksum
             FileName                       =    $FileName
             FileNameCompare                =    $FileNameCompare
             FileSize                       =    $FileSize
@@ -88,6 +102,10 @@ function New-CyarkEPMApp() {
             FileDescriptionCompare         =    $FileDescriptionCompare
             Company                        =    $Company
             CompanyCompare                 =    $CompanyCompare
+            MinProductVersion              =    $MinProductVersion
+            MaxProductVersion              =    $MaxProductVersion
+            MinFileVersion                 =    $MinFileVersion
+            MaxFileVersion                 =    $MaxFileVersion
 
     }
 

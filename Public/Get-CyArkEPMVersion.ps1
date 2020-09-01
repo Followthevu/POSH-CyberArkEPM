@@ -7,7 +7,7 @@ function Get-CyArkEPMVersion() {
  .Example 
   Get-CyArkEPMVersion
 #>
-	$Uri = "https://${EpmServer}/EPM/API/Server/Version"
+	$Uri = "https://${epmserver}/EPM/API/Server/Version"
 
 	try {
 

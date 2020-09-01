@@ -11,10 +11,13 @@ function Get-CyArkEPMPolicyDetails() {
         [parameter(Mandatory=$true)]
 		[string]$SetID,
         [parameter(Mandatory=$true)]
-		[string]$PolicyID
+		[string]$PolicyID,
+        [string]$Version
 	)
 
-	$PolicyDetailUri = "https://${EpmServer}/EPM/API/Sets/${SetID}/Policies/${PolicyID}"
+	$PolicyDetailUri = "https://$epmserver/EPM/API/Sets/$SetID/Policies/$PolicyID"
+
+    if ($Version) { $PolicyDetailUri = "https://$epmserver/EPM/API/$Version/Sets/$SetID/Policies/$PolicyID" }
 
 	try {
 

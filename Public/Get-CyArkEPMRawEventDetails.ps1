@@ -1,5 +1,12 @@
 function Get-CyArkEPMRawEventDetails() {
-    
+<# 
+.Synopsis 
+This method enables the user to retrieve raw events file data from EPM according to a predefined filter.
+.Description 
+This method enables the user to retrieve raw events file data from EPM according to a predefined filter.
+.Example 
+Get-CyArkEPMRawEventDetails -SetID <SetID> -Category <Category> -EventID <EventID>
+#>
     Param(
         [parameter(Mandatory=$true)]
         [string]$SetID,
@@ -20,9 +27,6 @@ function Get-CyArkEPMRawEventDetails() {
         [string]$DateTo,
         [ValidateSet('All','WithJustification')]
         [string]$Justification,
-        [ValidateSet('All','Executable','Script','MSI','MSU','ActiveX','Com','Win8App','DLL','DMG','PKG')]
-        [string]$ApplicationType,
-        [string]$ApplicationTypeCustom,
         [string]$PolicyName,
         [string]$Hash,
         [string]$FilePath,
@@ -70,186 +74,115 @@ function Get-CyArkEPMRawEventDetails() {
         Get-CyberArkEventTypes
     }
 
-    $RawEventDetailUri = "https://${EpmServer}/EPM/API/Sets/${SetID}/Events/${Category}/Raw/${EventID}"
+    $RawEventDetailUri = "https://$epmserver/EPM/API/Sets/$SetID/Events/$Category/Raw/$EventID"
 
     if ($Version) {
     
-        $RawEventDetailUri = "https://${EpmServer}/EPM/API/${Version}/Sets/${SetID}/Events/${Category}/Raw/${EventID}"
+        $RawEventDetailUri = "https://$epmserver/EPM/API/$Version/Sets/$SetID/Events/$Category/Raw/$EventID"
 
     }
 
     $Query = @()
 
-    if ($Offset -or $Limit -or $EventType -or $Publisher -or $DateFrom -or $DateTo -or $Justification -or $ApplicationType -or $ApplicationTypeCustom -or $PolicyName -or $Hash -or $FilePath -or $Company -or $FileDescription -or $ProductName -or $ProductVersion -or $SourceType -or $SourceName -or $PreHistorySourceType -or $PreHistorySourceName -or $FileSize -or $Package -or $FileVersion -or $ModificationTime -or $User -or $UserIsAdmin -or $TimeFirst -or $TimeLast -or $AgentEventCount -or $AccessAction -or $AccessTargetType -or $AccessTargetName -or $PolicyCategory -or $ThreatDetectionAction -or $ProcessCommandLine -or $ProcessCertificateIssuer -or $SourceProcessCommandLine -or $SourceProcessUsername -or $SourceProcessHash -or $SourceProcessPublisher -or $SourceProcessCertificateIssuer -or $ExposedUsers -or $Computer -or $FileQualifier -or $FileName) {
-        
-         $RawEventDetailUri =  $RawEventDetailUri + "?"
-        
-    }
+    if ($Offset -or $Limit -or $EventType -or $Publisher -or $DateFrom -or $DateTo -or $Justification -or $ApplicationType -or $ApplicationTypeCustom -or $PolicyName -or $Hash -or $FilePath -or $Company -or $FileDescription -or $ProductName -or $ProductVersion -or $SourceType -or $SourceName -or $PreHistorySourceType -or $PreHistorySourceName -or $FileSize -or $Package -or $FileVersion -or $ModificationTime -or $User -or $UserIsAdmin -or $TimeFirst -or $TimeLast -or $AgentEventCount -or $AccessAction -or $AccessTargetType -or $AccessTargetName -or $PolicyCategory -or $ThreatDetectionAction -or $ProcessCommandLine -or $ProcessCertificateIssuer -or $SourceProcessCommandLine -or $SourceProcessUsername -or $SourceProcessHash -or $SourceProcessPublisher -or $SourceProcessCertificateIssuer -or $ExposedUsers -or $Computer -or $FileQualifier -or $FileName) { $RawEventDetailUri =  $RawEventDetailUri + "?" }
 
-    if ($ApplicationType -and $ApplicationTypeCustom) {
+    #each if allows the requested parameter to be added to the URI
 
-        Write-host "You cannot use ApplicationType and ApplicationTypeCustom"
-        break
+    if ($Offset) { $Query += ("Offset=" + $Offset) } 
 
-    } elseif ($ApplicationType) {
+    if ($Limit) { $Query += ("Limit=" + $Limit) } 
 
-        $Query += ("ApplicationType=" + $ApplicationType)
+    if ($EventType) { $Query += ("EventType=" + $EventType) } 
 
-    } elseif ($ApplicationTypeCustom) {
+    if ($Publisher) { $Query += ("Publisher=" + $Publisher) } 
 
-        $Query += ("ApplicationType=" + $ApplicationTypeCustom)
-
-    }
-
-    if ($Offset) {
-        $Query += ("Offset=" + $Offset)
-        #Write-Host "Uri will be: " + $Uri
-    } 
-    if ($Limit) {
-        $Query += ("Limit=" + $Limit)
-        #Write-Host "Uri will be: " + $Uri
-    } 
-    if ($EventType) {
-        $Query += ("EventType=" + $EventType)
-        #Write-Host "Uri will be: " + $Uri
-    } 
-    if ($Publisher) {
-        $Query += ("Publisher=" + $Publisher)
-        #Write-Host "Uri will be: " + $Uri
-    } 
     if ($DateFrom) {
+        $DateFrom = Get-date $DateFrom -Format s
         $Query += ("DateFrom=" + $DateFrom)
-        #Write-Host "Uri will be: " + $Uri
     } 
     if ($DateTo) {
+        $DateTo = Get-date $DateTo -Format s
         $Query += ("DateTo=" + $DateTo)
-        #Write-Host "Uri will be: " + $Uri
     } 
-    if ($Justification) {
-        $Query += ("Justification=" + $Justification)
-        #Write-Host "Uri will be: " + $Uri
-    } 
-    if ($PolicyName) {
-        $Query += ("PolicyName=" + $PolicyName)
-        #Write-Host "Uri will be: " + $Uri
-    }
-    if ($Hash) { 
-        $Query += ("Hash=" + $Hash)
-    }
-    if ($FilePath) { 
-        $Query += ("FilePath=" + $FilePath)
-    }
-    if ($Company) { 
-        $Query += ("Company=" + $Company)
-    }
-    if ($FileDescription) { 
-        $Query += ("FileDescription=" + $FileDescription)
-    }
-    if ($ProductName) { 
-        $Query += ("ProductName=" + $ProductName)
-    }
-    if ($ProductVersion) { 
-        $Query += ("ProductVersion=" + $ProductVersion)
-    }
-    if ($SourceType) { 
-        $Query += ("SourceType=" + $SourceType)
-    }
-    if ($SourceName) { 
-        $Query += ("SourceName=" + $SourceName)
-    }
-    if ($PreHistorySourceType) { 
-        $Query += ("PreHistorySourceType=" + $PreHistorySourceType)
-    }
-    if ($PreHistorySourceName) { 
-        $Query += ("PreHistorySourceName=" + $PreHistorySourceName)
-    }
-    if ($FileSize) { 
-        $Query += ("FileSize=" + $FileSize)
-    }
-    if ($Package) { 
-        $Query += ("Package=" + $Package)
-    }
-    if ($FileVersion) { 
-        $Query += ("FileVersion=" + $FileVersion)
-    }
-    if ($ModificationTime) { 
-        $Query += ("ModificationTime=" + $ModificationTime)
-    }
-    if ($User) { 
-        $Query += ("User=" + $User)
-    }
-    if ($UserIsAdmin) { 
-        $Query += ("UserIsAdmin=" + $UserIsAdmin)
-    }
-    if ($TimeFirst) { 
-        $Query += ("TimeFirst=" + $TimeFirst)
-    }
-    if ($TimeLast) { 
-        $Query += ("TimeLast=" + $TimeLast)
-    }
-    if ($AgentEventCount) { 
-        $Query += ("AgentEventCount=" + $AgentEventCount)
-    }
-    if ($AccessAction) { 
-        $Query += ("AccessAction=" + $AccessAction)
-    }
-    if ($AccessTargetType) { 
-        $Query += ("AccessTargetType=" + $AccessTargetType)
-    }
-    if ($AccessTargetName) { 
-        $Query += ("AccessTargetName=" + $AccessTargetName)
-    }
-    if ($PolicyCategory) { 
-        $Query += ("PolicyCategory=" + $PolicyCategory)
-    }
-    if ($ThreatDetectionAction) { 
-        $Query += ("ThreatDetectionAction=" + $ThreatDetectionAction)
-    }
-    if ($ProcessCommandLine) { 
-        $Query += ("ProcessCommandLine=" + $ProcessCommandLine)
-    }
-    if ($ProcessCertificateIssuer) { 
-        $Query += ("ProcessCertificateIssuer=" + $ProcessCertificateIssuer)
-    }
-    if ($SourceProcessCommandLine) { 
-        $Query += ("SourceProcessCommandLine=" + $SourceProcessCommandLine)
-    }
-    if ($SourceProcessUsername) { 
-        $Query += ("SourceProcessUsername=" + $SourceProcessUsername)
-    }
-    if ($SourceProcessHash) { 
-        $Query += ("SourceProcessHash=" + $SourceProcessHash)
-    }
-    if ($SourceProcessPublisher) { 
-        $Query += ("SourceProcessPublisher=" + $SourceProcessPublisher)
-    }
-    if ($SourceProcessCertificateIssuer) { 
-        $Query += ("SourceProcessCertificateIssuer=" + $SourceProcessCertificateIssuer)
-    }
-    if ($ExposedUsers) { 
-        $Query += ("ExposedUsers=" + $ExposedUsers)
-    }
-    if ($Computer) {
 
-        $Query += ("Computer=" + $Computer)
+    if ($Justification) { $Query += ("Justification=" + $Justification) } 
 
-    }
-    if ($FileQualifier) {
+    if ($PolicyName) { $Query += ("PolicyName=" + $PolicyName) }
 
-        $Query += ("FileQualifier=" + $FileQualifier)
+    if ($Hash) { $Query += ("Hash=" + $Hash) }
 
-    }
-    if ($FileName) {
+    if ($FilePath) { $Query += ("FilePath=" + $FilePath) }
 
-        $Query += ("FileName=" + $FileName)
+    if ($Company) { $Query += ("Company=" + $Company) }
 
-    }
+    if ($FileDescription) { $Query += ("FileDescription=" + $FileDescription) }
 
+    if ($ProductName) { $Query += ("ProductName=" + $ProductName) }
+
+    if ($ProductVersion) { $Query += ("ProductVersion=" + $ProductVersion) }
+
+    if ($SourceType) { $Query += ("SourceType=" + $SourceType) }
+
+    if ($SourceName) { $Query += ("SourceName=" + $SourceName) }
+
+    if ($PreHistorySourceType) { $Query += ("PreHistorySourceType=" + $PreHistorySourceType) }
+
+    if ($PreHistorySourceName) { $Query += ("PreHistorySourceName=" + $PreHistorySourceName) }
+
+    if ($FileSize) { $Query += ("FileSize=" + $FileSize) }
+
+    if ($Package) { $Query += ("Package=" + $Package) }
+
+    if ($FileVersion) { $Query += ("FileVersion=" + $FileVersion) }
+
+    if ($ModificationTime) { $Query += ("ModificationTime=" + $ModificationTime) }
+
+    if ($User) { $Query += ("User=" + $User) }
+
+    if ($UserIsAdmin) { $Query += ("UserIsAdmin=" + $UserIsAdmin) }
+
+    if ($TimeFirst) { $Query += ("TimeFirst=" + $TimeFirst) }
+
+    if ($TimeLast) { $Query += ("TimeLast=" + $TimeLast) }
+
+    if ($AgentEventCount) { $Query += ("AgentEventCount=" + $AgentEventCount) }
+
+    if ($AccessAction) { $Query += ("AccessAction=" + $AccessAction) }
+
+    if ($AccessTargetType) { $Query += ("AccessTargetType=" + $AccessTargetType) }
+
+    if ($AccessTargetName) { $Query += ("AccessTargetName=" + $AccessTargetName) }
+
+    if ($PolicyCategory) { $Query += ("PolicyCategory=" + $PolicyCategory) }
+
+    if ($ThreatDetectionAction) { $Query += ("ThreatDetectionAction=" + $ThreatDetectionAction) }
+
+    if ($ProcessCommandLine) { $Query += ("ProcessCommandLine=" + $ProcessCommandLine) }
+
+    if ($ProcessCertificateIssuer) { $Query += ("ProcessCertificateIssuer=" + $ProcessCertificateIssuer) }
+
+    if ($SourceProcessCommandLine) { $Query += ("SourceProcessCommandLine=" + $SourceProcessCommandLine) }
+
+    if ($SourceProcessUsername) { $Query += ("SourceProcessUsername=" + $SourceProcessUsername) }
+
+    if ($SourceProcessHash) { $Query += ("SourceProcessHash=" + $SourceProcessHash) }
+
+    if ($SourceProcessPublisher) { $Query += ("SourceProcessPublisher=" + $SourceProcessPublisher) }
+
+    if ($SourceProcessCertificateIssuer) { $Query += ("SourceProcessCertificateIssuer=" + $SourceProcessCertificateIssuer) }
+
+    if ($ExposedUsers) { $Query += ("ExposedUsers=" + $ExposedUsers) }
+
+    if ($Computer) { $Query += ("Computer=" + $Computer) }
+
+    if ($FileQualifier) { $Query += ("FileQualifier=" + $FileQualifier) }
+
+    if ($FileName) { $Query += ("FileName=" + $FileName) }
+
+    #joins all parameters
     $QueryString = ($Query -join "&")
 
     $RawEventDetailUri = $RawEventDetailUri + $QueryString
-
-
 
     try {
 
