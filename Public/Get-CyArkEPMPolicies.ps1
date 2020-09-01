@@ -67,7 +67,8 @@ Get-CyArkEPMPolicies -SetID <Set ID> -PolicyType "Windows Application Advanced P
     }
     if($PolicyType) {
 
-        switch {
+        switch ($PolicyType)
+        {
             'Windows Application Advanced Policy' {
                 $PolicyType = 'AdvancedWinApp'
                 $Query += ('$filter=PolicyType eq' + $PolicyType )
