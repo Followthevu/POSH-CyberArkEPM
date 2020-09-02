@@ -1,16 +1,16 @@
 function Update-CyArkEPMPolicy(){
 <# 
- .Synopsis 
-  Updates a Windows Advanced Policy
+.Synopsis 
+Updates a Windows Advanced Policy in the EPM
+.Description 
+Updates a Windows Advanced Policy in the EPM
 
- .Description 
-
- .Example 
-  
+.Example 
+Update-CyArkEPMPolicy -SetID <Set ID> -PolicyId <Policy ID> -PolicyDetails <Policy Details Object>
 #>
     Param(
         [parameter(Mandatory=$true)]
-        [string]$SetID,
+        [string]$SetId,
         [parameter(Mandatory=$true)]
         [string]$PolicyId,
         [string]$Version,
@@ -19,11 +19,11 @@ function Update-CyArkEPMPolicy(){
 
     )
 
-    $UpdatePolicyUri = "https://${global:EpmServer}/EPM/API/Sets/${SetID}/Policies/${PolicyId}"
+    $UpdatePolicyUri = "https://$global:EpmServer/EPM/API/Sets/$SetId/Policies/$PolicyId"
     
     if ($Version) {
 
-        $UpdatePolicyUri = "https://${global:EpmServer}/EPM/API/${Version}/Sets/${SetID}/Policies/${PolicyId}"
+        $UpdatePolicyUri = "https://$global:EpmServer/EPM/API/$Version/Sets/$SetId/Policies/$PolicyId"
 
     }
 

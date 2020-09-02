@@ -5,7 +5,7 @@ This method creates a new EPM policy.
 .Description 
 This method creates a new EPM policy.
 .Example 
-New-CyArkEPMPolicy -SetID $sets.id -PolicyDetails <Object from New-CyarkEPMPolicyDetails>
+New-CyArkEPMPolicy -SetID <set id> -PolicyDetails <Object from New-CyarkEPMPolicyDetails>
 #>
     Param(
         [parameter(Mandatory=$true)]

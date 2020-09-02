@@ -1,5 +1,18 @@
 function New-CyarkEPMPolicyActivationSetting() {
+<# 
+.Synopsis 
+Returns PS Object for the Activation Parameter needed for a new EPM Policy
+.Description 
+Returns PS Object for the Activation Parameter needed for a new EPM Policy
 
+https://docs.cyberark.com/Product-Doc/OnlineHelp/EPM/11.5/en/Content/WebServices/AdvancedPolicyDefinition.htm
+.Example 
+New-CyarkEPMPolicyActivationSetting -Activation "ActivateNow"
+.Example 
+New-CyarkEPMPolicyActivationSetting -Activation "ActivateOn" -ActivationDate "02/08/2020 8PM"
+.Example 
+New-CyarkEPMPolicyActivationSetting -Activation "Deactivate"
+#>
     Param(
         [parameter(Mandatory=$False)]
         [ValidateSet('ActivateNow','ActivateOn','ActivateManually','Deactivate','DeactivateOn')]

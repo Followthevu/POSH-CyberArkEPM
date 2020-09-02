@@ -1,13 +1,13 @@
 function New-CyarkEPMApp() {
 <# 
- .Synopsis 
-  Created PS Object for the Application parameter when using New-CyarkEPMPolicy
- .Description 
-  Created PS Object for the Application parameter when using New-CyarkEPMPolicy
+.Synopsis 
+Returns PS Object for the Application parameter when using New-CyarkEPMPolicy
+.Description 
+Returns PS Object for the Application parameter when using New-CyarkEPMPolicy
 
-  https://docs.cyberark.com/Product-Doc/OnlineHelp/EPM/11.5/en/Content/WebServices/AdvancedPolicyDefinition.htm
- .Example 
-  New-CyarkEPMApp -Description "Application Description" -Checksum <HashofApplication> -FileName "Application.exe" 
+https://docs.cyberark.com/Product-Doc/OnlineHelp/EPM/11.5/en/Content/WebServices/AdvancedPolicyDefinition.htm
+.Example 
+New-CyarkEPMApp -Description "Application Description" -Checksum <HashofApplication> -FileName "Application.exe" 
 #>
     Param(
         [string]$ApplicationID,

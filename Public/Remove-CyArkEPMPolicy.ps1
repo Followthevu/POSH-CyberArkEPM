@@ -1,20 +1,29 @@
 function Remove-CyArkEPMPolicy() {
-    <# Filter does not work yet#>
+<# 
+.Synopsis 
+Removes a Windows Advanced Policy in the EPM
+.Description 
+Removes a Windows Advanced Policy in the EPM
+
+.Example 
+Remove-CyArkEPMPolicy -SetID <Set ID> -PolicyId <Policy ID>
+#>
     Param(
+        [parameter(Mandatory=$true)]
         [string]$SetID,
+        [parameter(Mandatory=$true)]
         [string]$PolicyId,
         [string]$Version
 
     )
 
-    $RemovePolicyUri = "https://${epmserver}/EPM/API/Sets/${SetID}/Policies/${PolicyId}"
+    $RemovePolicyUri = "https://$global:EpmServer/EPM/API/Sets/$SetID/Policies/$PolicyId"
 
     if ($Version) {
 
-        $RemovePolicyUri = "https://${epmserver}/EPM/API/${Version}/Sets/${SetID}/Policies/${PolicyId}"
+        $RemovePolicyUri = "https://$global:EpmServer/EPM/API/$Version/Sets/$SetID/Policies/$PolicyId"
 
     }
-
 
     try {
 
@@ -24,7 +33,7 @@ function Remove-CyArkEPMPolicy() {
 
         if ($RemovePolicyRequest.StatusCode -eq "204" ) {
 
-            Write-Host "`nPOLICY ${PolicyId} has been removed`n"
+            Write-Host "`nPOLICY $PolicyId has been removed`n"
 
         }
         
