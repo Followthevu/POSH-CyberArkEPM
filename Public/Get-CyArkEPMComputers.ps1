@@ -49,7 +49,8 @@ The following example returns computers whose platform is 'Windows' and status i
         [ValidateRange(1,5000)]
         [int]$Limit,
         [string]$Filter,
-        [string]$Version
+        [string]$Version,
+        $FindComputers
     )
 
     $ComputersUri = "https://$epmserver/EPM/API/Sets/$SetID/Computers"
@@ -57,7 +58,7 @@ The following example returns computers whose platform is 'Windows' and status i
     if ($Version) { $ComputersUri = "https://$epmserver/EPM/API/$Version/Sets/$SetID/Computers"}
 
 
-    if ($Offset -or $Limit -or $Filter) { $ComputersUri =  $ComputersUri + "?" }
+    if ($Offset -or $Limit -or $Filter -or $FindComputers) { $ComputersUri =  $ComputersUri + "?" }
 
     $Query = @()
 
@@ -73,12 +74,23 @@ The following example returns computers whose platform is 'Windows' and status i
     if ($Filter) {
         $Query += ('$filter=' + "$Filter")
     }
-
+    #Find computers by their exact hostnames
+    if ($FindComputers){
+        #Do not continue if -Filter is used
+        if ($Filter) {
+            Write-Host "you cannot use -FindComputers with -Filter"
+            break
+        }
+        #Take list of Hostnames and add single quotes to them for filter
+        $FindComputers = $FindComputers | Foreach-Object {
+            "'"+$_+"'"
+        } 
+        $FindComputers = ($FindComputers -join ",").ToString()
+        $Query += ( '$filter='+"ComputerName in($FindComputers)" )
+    }
     $QueryString = ($Query -join "&")
 
-
     $ComputersUri = $ComputersUri + $QueryString
-
 
     try {
 
