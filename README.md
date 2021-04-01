@@ -59,7 +59,7 @@ $Sets[0].id
 ```
 
 ## Contributing
-Pull requests are welcomed. I am not experienced with github and git so there will be a delay with my response. For major changes, please open an issue first to discuss the proposed changes.
+Pull requests are welcomed.
 
 ## Actions
 
